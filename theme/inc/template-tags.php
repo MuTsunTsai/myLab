@@ -138,7 +138,11 @@ function mylab_category_labels() {
 }
 
 /**
- * 文章頁的麵包屑：首頁 › 頂層分類 › 子分類 › 文章；頁面則列出上層頁面。
+ * 文章頁的麵包屑：首頁 › 分類 › 文章；頁面則列出上層頁面。
+ *
+ * 分類以主要分類（排在第一個，見 mylab_primary_category_first()）為準：
+ * - 主要分類是子分類時，列出它的上層分類鏈
+ * - 主要分類是頂層分類時，若文章也屬於它底下的某個子分類，再接上該子分類
  */
 function mylab_breadcrumb() {
 	$items = array(
@@ -146,26 +150,27 @@ function mylab_breadcrumb() {
 	);
 
 	if ( is_singular( 'post' ) ) {
-		$top   = null;
-		$child = null;
 		$terms = get_the_category();
-		foreach ( $terms as $term ) {
-			if ( ! $term->parent ) {
-				$top = $term;
-				break;
-			}
-		}
-		if ( $top ) {
-			foreach ( $terms as $term ) {
-				if ( $term->parent === $top->term_id ) {
-					$child = $term;
-					break;
+		$chain = array();
+		if ( $terms ) {
+			$primary = $terms[0];
+			if ( $primary->parent ) {
+				foreach ( array_reverse( get_ancestors( $primary->term_id, 'category', 'taxonomy' ) ) as $ancestor_id ) {
+					$chain[] = get_category( $ancestor_id );
+				}
+				$chain[] = $primary;
+			} else {
+				$chain[] = $primary;
+				foreach ( $terms as $term ) {
+					if ( $term->parent === $primary->term_id ) {
+						$chain[] = $term;
+						break;
+					}
 				}
 			}
-			$items[] = array( get_category_link( $top ), esc_html( $top->name ) );
-			if ( $child ) {
-				$items[] = array( get_category_link( $child ), esc_html( $child->name ) );
-			}
+		}
+		foreach ( $chain as $term ) {
+			$items[] = array( get_category_link( $term ), esc_html( $term->name ) );
 		}
 	} elseif ( is_page() ) {
 		foreach ( array_reverse( get_post_ancestors( get_post() ) ) as $ancestor ) {

@@ -48,11 +48,12 @@ add_filter( 'excerpt_more', 'mylab_excerpt_more' );
  * 把 Yoast SEO 設定的主要分類排在最前面，麵包屑與卡片標籤都會以它為準。
  *
  * @param WP_Term[]  $categories
- * @param int|false  $post_id
+ * @param int|false  $post_id 呼叫 get_the_category() 時未指定文章則為 false，此時以目前文章為準。
  * @return WP_Term[]
  */
 function mylab_primary_category_first( $categories, $post_id ) {
-	$primary = (int) get_post_meta( (int) $post_id, '_yoast_wpseo_primary_category', true );
+	$post_id = $post_id ? (int) $post_id : get_the_ID();
+	$primary = (int) get_post_meta( $post_id, '_yoast_wpseo_primary_category', true );
 	if ( ! $primary ) {
 		return $categories;
 	}

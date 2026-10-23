@@ -82,6 +82,8 @@ $post_id = wp_insert_post(
 			'post_category' => array( $cats['開發分享'], $child, $cats['演算法'] ),
 			'tags_input'    => array( 'paper.js', 'TypeScript' ),
 			'post_date'     => '2026-10-22 10:00:00',
+			// Yoast SEO 的主要分類；麵包屑與卡片標籤以它為準
+			'meta_input'    => array( '_yoast_wpseo_primary_category' => $cats['演算法'] ),
 		)
 	)
 );

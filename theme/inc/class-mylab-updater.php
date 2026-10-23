@@ -22,9 +22,16 @@ final class MyLab_Updater {
 	public static function init() {
 		add_filter( 'update_themes_github.com', array( __CLASS__, 'check_update' ), 10, 3 );
 		add_filter( 'http_request_args', array( __CLASS__, 'authorize' ), 10, 2 );
-		// 在後台按下「再次檢查」時一併清除快取
+		// 在「控制台 › 更新」按下「再次檢查」時清除快取；必須早於 WordPress 在同一個 hook 上執行的 wp_update_themes()
+		add_action( 'load-update-core.php', array( __CLASS__, 'flush_on_force_check' ), 1 );
 		add_action( 'delete_site_transient_update_themes', array( __CLASS__, 'flush' ) );
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'flush' ) );
+	}
+
+	public static function flush_on_force_check() {
+		if ( ! empty( $_GET['force-check'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification -- 只是清除快取
+			self::flush();
+		}
 	}
 
 	/**
@@ -52,7 +59,8 @@ final class MyLab_Updater {
 	}
 
 	/**
-	 * 取得最新的 Release（快取 6 小時；失敗時快取 1 小時，避免頻繁打 API）。
+	 * 取得最新的 Release，結果快取 1 小時。
+	 * 「控制台 › 更新」頁面每次開啟都可能重新檢查，快取可避免超過 GitHub API 未驗證請求每小時 60 次的限制。
 	 *
 	 * @return array{version: string, url: string, package: string}|null
 	 */
@@ -86,7 +94,7 @@ final class MyLab_Updater {
 			}
 		}
 
-		set_site_transient( self::TRANSIENT, $release ? $release : array(), $release ? 6 * HOUR_IN_SECONDS : HOUR_IN_SECONDS );
+		set_site_transient( self::TRANSIENT, $release ? $release : array(), HOUR_IN_SECONDS );
 		return $release;
 	}
 

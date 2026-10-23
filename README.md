@@ -37,7 +37,8 @@ pnpm typecheck
 | `theme/template-parts/` | 模板片段 |
 | `theme/dist/` | 建置結果（不納入版本控制），由 `inc/assets.php` 依 `dist/manifest.json` 載入 |
 | `preview/` | 本機預覽用的 Playground 設定與測試資料 |
-| `scripts/` | 打包與發佈腳本 |
+| `scripts/` | 打包、發佈，以及產生 Bootstrap Icons 字型子集（`icons.mjs`）的腳本 |
+| `src/generated/` | 建置前產生的圖示字型子集與 CSS（不納入版本控制） |
 
 ### 更新相依套件
 

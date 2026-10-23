@@ -122,9 +122,10 @@ function mylab_comment_form_fields( $fields ) {
 	$commenter = wp_get_current_commenter();
 	$required  = (bool) get_option( 'require_name_email' );
 
+	// $icon 要傳完整的類別名稱（如 bi-person）：圖示字型是依原始碼中出現的 bi-* 名稱裁切的，見 scripts/icons.mjs
 	$input = static function ( $name, $type, $icon, $placeholder, $value, $maxlength, $is_required ) {
 		return sprintf(
-			'<div class="comment-form-%1$s"><div class="input-group"><span class="input-group-text"><i class="bi bi-%3$s" aria-hidden="true"></i></span><label class="visually-hidden" for="%1$s">%4$s</label><input id="%1$s" name="%1$s" type="%2$s" class="form-control" placeholder="%4$s" value="%5$s" maxlength="%6$d"%7$s></div></div>',
+			'<div class="comment-form-%1$s"><div class="input-group"><span class="input-group-text"><i class="bi %3$s" aria-hidden="true"></i></span><label class="visually-hidden" for="%1$s">%4$s</label><input id="%1$s" name="%1$s" type="%2$s" class="form-control" placeholder="%4$s" value="%5$s" maxlength="%6$d"%7$s></div></div>',
 			esc_attr( $name ),
 			esc_attr( $type ),
 			esc_attr( $icon ),
@@ -136,9 +137,9 @@ function mylab_comment_form_fields( $fields ) {
 	};
 
 	$custom = array(
-		'author' => $input( 'author', 'text', 'person', $required ? __( '名稱（必填）', 'mylab' ) : __( '名稱', 'mylab' ), $commenter['comment_author'], 245, $required ),
-		'email'  => $input( 'email', 'email', 'envelope', $required ? __( '電子郵件（必填）', 'mylab' ) : __( '電子郵件', 'mylab' ), $commenter['comment_author_email'], 100, $required ),
-		'url'    => $input( 'url', 'url', 'globe2', __( '網站（非必填）', 'mylab' ), $commenter['comment_author_url'], 200, false ),
+		'author' => $input( 'author', 'text', 'bi-person', $required ? __( '名稱（必填）', 'mylab' ) : __( '名稱', 'mylab' ), $commenter['comment_author'], 245, $required ),
+		'email'  => $input( 'email', 'email', 'bi-envelope', $required ? __( '電子郵件（必填）', 'mylab' ) : __( '電子郵件', 'mylab' ), $commenter['comment_author_email'], 100, $required ),
+		'url'    => $input( 'url', 'url', 'bi-globe2', __( '網站（非必填）', 'mylab' ), $commenter['comment_author_url'], 200, false ),
 	);
 	if ( isset( $fields['cookies'] ) ) {
 		$custom['cookies'] = $fields['cookies'];

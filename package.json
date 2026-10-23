@@ -5,12 +5,13 @@
 	"description": "星君研究室的 WordPress 佈景主題",
 	"type": "module",
 	"scripts": {
-		"build": "rsbuild build",
-		"watch": "rsbuild build --watch",
+		"build": "node scripts/icons.mjs && rsbuild build",
+		"watch": "node scripts/icons.mjs && rsbuild build --watch",
 		"preview": "wp-playground-cli server --port=9400 --mount-dir ./theme /wordpress/wp-content/themes/mylab --mount-dir ./preview /wordpress/preview --blueprint=./preview/blueprint.json --login",
 		"typecheck": "tsc --noEmit",
 		"package": "node scripts/package.mjs",
-		"release": "node scripts/release.mjs"
+		"release": "node scripts/release.mjs",
+		"icons": "node scripts/icons.mjs"
 	},
 	"dependencies": {
 		"@fontsource-variable/inter": "^5.3.0",
@@ -27,6 +28,7 @@
 		"@types/bootstrap": "^5.2.11",
 		"@wp-playground/cli": "^3.1.60",
 		"fflate": "^0.8.3",
+		"subset-font": "^2.9.0",
 		"typescript": "^7.0.2"
 	},
 	"packageManager": "pnpm@12.6.0"

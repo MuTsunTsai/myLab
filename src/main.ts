@@ -3,7 +3,8 @@
  * 文章內容的重度處理（Shiki、KaTeX、Mermaid）都在 content.ts 中依需要動態載入。
  */
 import "@fontsource-variable/inter";
-import "bootstrap-icons/font/bootstrap-icons.css";
+// 只含實際用到之圖示的子集，由 scripts/icons.mjs 在建置前產生
+import "./generated/bootstrap-icons.css";
 import "./scss/main.scss";
 
 // 只引入用得到的 Bootstrap 元件；匯入即會註冊對應的 data-bs-* 行為

@@ -2,7 +2,7 @@
  * 文章內容的後處理。WP Githuber MD 輸出的標記如下：
  * - 程式碼：<pre><code class="language-xxx">
  * - 數學式：<pre><code class="language-katex"> 與 <code class="katex-inline">
- * - 圖表：  <pre><code class="language-mermaid">
+ * - 圖表：  <pre><code class="language-mermaid">（以 Pele 渲染）
  *
  * 各處理器體積都不小，只在頁面上真的有對應內容時才動態載入。
  */

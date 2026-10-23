@@ -7,7 +7,7 @@
 
 - 藍色調的暗色設計，Bootstrap 5（Sass 客製化、只編譯用到的元件）
 - 程式碼以 [Shiki](https://shiki.style/) 渲染（dark-plus），附複製按鈕
-- 數學式以 [KaTeX](https://katex.org/)、圖表以 [Mermaid](https://mermaid.js.org/) 渲染，取代 WP Githuber MD 內建的舊版本
+- 數學式以 [KaTeX](https://katex.org/) 渲染，Mermaid 語法的圖表以 [Pele](https://pele.run/) 渲染（比 Mermaid 小很多、也快很多），取代 WP Githuber MD 內建的舊版本
 - 內建目錄（取代 Easy Table of Contents），錨點格式與 Easy TOC 相同，既有連結不會失效
 - 透過 GitHub Releases 自動更新
 

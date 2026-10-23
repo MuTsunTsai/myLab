@@ -1,15 +1,78 @@
 /**
  * 以 Shiki 渲染程式碼區塊，並加上複製按鈕。
  *
- * 使用 fine-grained 的 shiki/core，搭配 JavaScript regex engine（不需要載入 WASM）；
- * 各語言的 grammar 由打包工具拆成獨立 chunk，只會載入頁面上用到的語言。
+ * 使用 fine-grained 的 shiki/core，搭配 JavaScript regex engine（不需要載入 WASM）。
+ * 語法檔的來源分兩種：
+ * - 常用語言打包進佈景主題（各自是獨立 chunk，只載入頁面上用到的）
+ * - 其它語言在執行期從 CDN 載入同一版本的 @shikijs/langs，避免把數百個語法檔都塞進佈景主題
  */
-import { createHighlighterCore, type HighlighterCore } from "shiki/core";
+import { createHighlighterCore, type HighlighterCore, type LanguageRegistration } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
-import { bundledLanguages } from "shiki/langs";
 import darkPlus from "shiki/themes/dark-plus.mjs";
 
 const THEME = "dark-plus";
+
+type Grammar = LanguageRegistration[];
+type GrammarLoader = () => Promise<{ default: Grammar }>;
+
+const typescript: GrammarLoader = () => import("shiki/langs/typescript.mjs");
+const javascript: GrammarLoader = () => import("shiki/langs/javascript.mjs");
+const shellscript: GrammarLoader = () => import("shiki/langs/shellscript.mjs");
+const powershell: GrammarLoader = () => import("shiki/langs/powershell.mjs");
+const cpp: GrammarLoader = () => import("shiki/langs/cpp.mjs");
+const csharp: GrammarLoader = () => import("shiki/langs/csharp.mjs");
+const yaml: GrammarLoader = () => import("shiki/langs/yaml.mjs");
+const markdown: GrammarLoader = () => import("shiki/langs/markdown.mjs");
+const python: GrammarLoader = () => import("shiki/langs/python.mjs");
+const makefile: GrammarLoader = () => import("shiki/langs/makefile.mjs");
+const kotlin: GrammarLoader = () => import("shiki/langs/kotlin.mjs");
+
+/**
+ * 打包進佈景主題的常用語言（鍵為 Githuber MD 輸出的 language-xxx 名稱，含別名）。
+ * 依網站文章實際用到的語言挑選（2026/10 透過 REST API 掃過全站 80 篇文章與頁面），再加上幾個可能用到的；要增減時只需修改這裡。
+ */
+const BUNDLED: Record<string, GrammarLoader> = {
+	typescript, ts: typescript,
+	tsx: () => import("shiki/langs/tsx.mjs"),
+	javascript, js: javascript,
+	jsx: () => import("shiki/langs/jsx.mjs"),
+	json: () => import("shiki/langs/json.mjs"),
+	jsonc: () => import("shiki/langs/jsonc.mjs"),
+	html: () => import("shiki/langs/html.mjs"),
+	css: () => import("shiki/langs/css.mjs"),
+	scss: () => import("shiki/langs/scss.mjs"),
+	vue: () => import("shiki/langs/vue.mjs"),
+	shellscript, bash: shellscript, sh: shellscript, shell: shellscript, zsh: shellscript,
+	powershell, ps1: powershell,
+	cpp, "c++": cpp,
+	c: () => import("shiki/langs/c.mjs"),
+	csharp, cs: csharp, "c#": csharp,
+	razor: () => import("shiki/langs/razor.mjs"),
+	php: () => import("shiki/langs/php.mjs"),
+	python, py: python,
+	yaml, yml: yaml,
+	markdown, md: markdown,
+	xml: () => import("shiki/langs/xml.mjs"),
+	sql: () => import("shiki/langs/sql.mjs"),
+	diff: () => import("shiki/langs/diff.mjs"),
+	makefile, make: makefile,
+	kotlin, kt: kotlin, kts: kotlin,
+	swift: () => import("shiki/langs/swift.mjs"),
+	apache: () => import("shiki/langs/apache.mjs"),
+};
+
+const CDN_NAMES = new Set(SHIKI_LANGS_NAMES);
+const CDN_BASE = `https://cdn.jsdelivr.net/npm/@shikijs/langs@${SHIKI_LANGS_VERSION}/dist/`;
+
+/** 取得語言的語法檔；Shiki 不支援的語言回傳 undefined */
+function loadGrammar(lang: string): Promise<Grammar> | undefined {
+	if(Object.hasOwn(BUNDLED, lang)) return BUNDLED[lang]().then(m => m.default);
+	if(CDN_NAMES.has(lang)) {
+		const url = CDN_BASE + encodeURIComponent(lang) + ".mjs";
+		return import(/* webpackIgnore: true */ url).then((m: { default: Grammar }) => m.default);
+	}
+	return undefined;
+}
 
 /** 依語言對 Shiki 輸出的 HTML 做的額外調整 */
 const POST_PROCESS: Record<string, (html: string) => string> = {
@@ -24,17 +87,26 @@ function getLang(el: HTMLElement): string {
 	return "";
 }
 
-function isBundled(lang: string): lang is keyof typeof bundledLanguages {
-	return Object.hasOwn(bundledLanguages, lang);
-}
-
 export async function highlightCode(blocks: HTMLElement[]): Promise<void> {
-	const langs = [...new Set(blocks.map(getLang).filter(isBundled))];
+	// 先載入頁面上用到的所有語法檔；個別失敗（例如 CDN 連不上）時，該語言就以純文字顯示
+	const loaded = new Set<string>();
+	const grammars: Grammar[] = [];
+	await Promise.all([...new Set(blocks.map(getLang))].map(async lang => {
+		try {
+			const grammar = await loadGrammar(lang);
+			if(!grammar) return;
+			grammars.push(grammar);
+			loaded.add(lang);
+		} catch(e) {
+			console.error(`[myLab] 無法載入語言 ${lang} 的語法檔`, e);
+		}
+	}));
+
 	let highlighter: HighlighterCore | undefined;
 	try {
 		highlighter = await createHighlighterCore({
 			themes: [darkPlus],
-			langs: langs.map(lang => bundledLanguages[lang]),
+			langs: grammars,
 			engine: createJavaScriptRegexEngine({ forgiving: true }),
 		});
 	} catch(e) {
@@ -47,7 +119,7 @@ export async function highlightCode(blocks: HTMLElement[]): Promise<void> {
 		const text = code.textContent!.replace(/\n$/, "");
 
 		let rendered: HTMLElement = pre;
-		if(highlighter && isBundled(lang)) {
+		if(highlighter && loaded.has(lang)) {
 			try {
 				let html = highlighter.codeToHtml(text, { lang, theme: THEME });
 				html = POST_PROCESS[lang]?.(html) ?? html;

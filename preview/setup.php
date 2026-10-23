@@ -55,7 +55,21 @@ export function add(a: number, b: number): number {
 	B -->|是| C[分層式更新]
 	B -->|否| D[反應式框架]
 </code></pre>
+<p>子圖標題的 Mermaid 字元實體與用 &lt;br/&gt; 分行的長標籤（測試 Pele 的相容處理）：</p>
+<pre><code class="language-mermaid">flowchart TB
+subgraph "Input#emsp;#emsp;"
+	A["第一次 PASS — 錄影時即時執行&lt;br/&gt;onFrame → libx264 ultrafast CRF 18 → intermediate.mp4"]
+end
+A -->|"recorder.stop() 在這裡返回"| B["第二次 PASS — 停止後在背景中執行&lt;br/&gt;如果真的想要也可以用 libsvtav1 preset 0"]
+style B fill:#2d4f3a,stroke:#4ec9b0,color:#fff
+</code></pre>
 <pre><code>沒有指定語言的程式碼</code></pre>
+<p>不在常用清單裡的語言（例如 Rust），語法檔會從 CDN 載入：</p>
+<pre><code class="language-rust">fn main() {
+	let langs = vec!["ts", "js"];
+	println!("{:?}", langs);
+}
+</code></pre>
 <h2>測試結果</h2>
 <ul><li>項目一</li><li>項目二<ul><li>巢狀項目</li></ul></li></ul>
 <p>結尾段落，再引用一次第一個註解<sup id="fnref2:paper"><a href="#fn:paper" class="footnote-ref">1</a></sup>。</p>

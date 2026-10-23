@@ -127,19 +127,27 @@ code, kbd, samp, pre {
 	color: $danger;
 }
 
-// ----- Mermaid -----
+// ----- 圖表（Mermaid 語法，由 Pele 渲染，見 src/ts/diagram.ts） -----
 
-.mermaid {
+.diagram {
 	margin-bottom: 1.25em;
-	text-align: center;
+	--pele-bg: transparent;
+	--pele-fg: #e2e8f0;
+	--pele-muted: #8b9bb4;
+	--pele-line: #60a5fa;
+	--pele-surface: #1e3a6e;
+	--pele-surface-alt: #111a2e;
+	--pele-border: #3b82f6;
+	--pele-accent: #{$cyan};
+	--pele-font: #{inspect($font-family-sans-serif)};
+	--pele-series-1: #6da7ec;
+	--pele-series-2: #f5826a;
+	--pele-series-3: #2fc4a0;
 
 	svg {
+		display: block;
 		max-width: 100%;
 		height: auto;
-	}
-
-	g.label {
-		font-size: 15px;
-		line-height: 24px;
+		margin-inline: auto;
 	}
 }

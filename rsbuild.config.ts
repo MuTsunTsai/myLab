@@ -1,5 +1,25 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
 import { defineConfig } from "@rsbuild/core";
 import { pluginSass } from "@rsbuild/plugin-sass";
+
+/**
+ * Shiki 語法檔套件（@shikijs/langs）的版本與所有可用的語言名稱（含別名）。
+ * 未打包進佈景主題的語言會在執行期從 CDN 載入同一版本，見 src/ts/code.ts。
+ */
+function shikiLangs(): { version: string; names: string[] } {
+	const require = createRequire(import.meta.url);
+	const shikiRequire = createRequire(require.resolve("shiki"));
+	const dist = dirname(shikiRequire.resolve("@shikijs/langs"));
+	const { version } = JSON.parse(readFileSync(join(dist, "..", "package.json"), "utf8"));
+	const names = readdirSync(dist)
+		.filter(f => f.endsWith(".mjs") && f !== "index.mjs")
+		.map(f => f.slice(0, -4));
+	return { version, names };
+}
+
+const shiki = shikiLangs();
 
 /**
  * 輸出到 theme/dist/，並產生 manifest.json 讓 PHP 端（theme/inc/assets.php）依此 enqueue。
@@ -20,6 +40,10 @@ export default defineConfig({
 	source: {
 		entry: {
 			main: "./src/main.ts",
+		},
+		define: {
+			SHIKI_LANGS_VERSION: JSON.stringify(shiki.version),
+			SHIKI_LANGS_NAMES: JSON.stringify(shiki.names),
 		},
 	},
 	output: {

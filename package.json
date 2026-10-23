@@ -18,7 +18,7 @@
 		"bootstrap": "^5.3.8",
 		"bootstrap-icons": "^1.13.2",
 		"katex": "^0.19.0",
-		"mermaid": "^12.2.0",
+		"pele": "^1.8.0",
 		"shiki": "^4.5.0"
 	},
 	"devDependencies": {

@@ -7,7 +7,8 @@
 	min-height: clamp(20rem, 52vh, 34rem);
 	padding: 4rem 0 5rem;
 	isolation: isolate;
-	background: var(--hero-image, none) center / cover no-repeat;
+	// 背景圖只畫到邊框以內：遮罩（::before）蓋不到邊框，否則半透明的下緣分隔線會透出原圖的顏色
+	background: var(--hero-image, none) center / cover no-repeat padding-box;
 	border-bottom: 1px solid var(--ml-border);
 
 	// 圖片上的遮罩：左側標題區較暗以確保可讀性，往右逐漸透出圖片，底部再接回頁面底色

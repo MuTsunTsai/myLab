@@ -15,8 +15,9 @@ html {
 	}
 }
 
+// 不要給 body 加 position：小螢幕上 WordPress 工具列是 position: absolute，
+// body 一旦成為定位元素，工具列就會被 <html> 的 46px 上邊距一起推下來
 body {
-	position: relative;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;

@@ -1,6 +1,6 @@
 <?php
 /**
- * 目錄（取代 Easy Table of Contents 外掛；外掛仍啟用時的處理見 compat-easy-toc.php）。
+ * 目錄（取代 Easy Table of Contents 外掛）。
  *
  * - 為內文的 h2–h4 加上 id，格式與 Easy TOC 相同，所以既有的錨點連結都還能用
  * - 標題數量足夠時，在第一個標題前插入可折疊的目錄

@@ -24,9 +24,7 @@ require MYLAB_DIR . '/inc/template-functions.php';
 require MYLAB_DIR . '/inc/comments.php';
 require MYLAB_DIR . '/inc/customizer.php';
 require MYLAB_DIR . '/inc/class-mylab-toc.php';
-require MYLAB_DIR . '/inc/class-mylab-toc-widget.php';
-require MYLAB_DIR . '/inc/compat-easy-toc.php';
-require MYLAB_DIR . '/inc/class-mylab-updater.php';
+require MYLAB_DIR . '/inc/class-mylab-toc-widget.php';require MYLAB_DIR . '/inc/class-mylab-updater.php';
 
 MyLab_Toc::init();
 MyLab_Updater::init();

@@ -1,0 +1,192 @@
+// 文章卡片網格與彙整頁標頭。
+
+.post-grid {
+	padding-block: 2.5rem 1rem;
+}
+
+.post-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+	background: linear-gradient(180deg, var(--ml-surface-2), var(--ml-surface));
+	border: 1px solid var(--ml-border);
+	border-radius: $border-radius-lg;
+	transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+
+	// 頂端的漸層光條，滑鼠移入時出現
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0 0 auto;
+		height: 2px;
+		background: var(--ml-gradient);
+		opacity: 0;
+		transition: opacity .2s ease;
+	}
+
+	&:hover,
+	&:focus-within {
+		transform: translateY(-3px);
+		border-color: rgba($primary, .5);
+		box-shadow: var(--ml-glow);
+
+		&::before {
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		&:hover,
+		&:focus-within {
+			transform: none;
+		}
+	}
+
+	&__thumb img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: 1.25rem 1.25rem 1rem;
+	}
+
+	&__cats {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		flex-wrap: wrap;
+		gap: .4rem;
+		margin-bottom: .75rem;
+	}
+
+	&__title {
+		margin-bottom: .75rem;
+		font-size: 1.125rem;
+		line-height: 1.45;
+
+		a {
+			color: var(--bs-emphasis-color);
+			text-decoration: none;
+		}
+
+		.bi-pin-angle-fill {
+			margin-right: .3rem;
+			color: var(--ml-accent);
+		}
+	}
+
+	&:hover &__title a {
+		color: #fff;
+	}
+
+	// 摘要以遮罩淡出，取代 mynote 的 effect-layer
+	&__excerpt {
+		flex: 1;
+		max-height: 9.5em;
+		overflow: hidden;
+		font-size: .9375rem;
+		color: var(--bs-secondary-color);
+		mask-image: linear-gradient(to bottom, #000 55%, transparent);
+
+		p {
+			margin: 0;
+		}
+	}
+
+	&__footer {
+		position: relative;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: .75rem 1.25rem;
+		font-family: $font-family-monospace;
+		font-size: .8125rem;
+		color: var(--bs-tertiary-color);
+		border-top: 1px solid var(--ml-border);
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover {
+				color: var(--bs-link-hover-color);
+			}
+		}
+
+		i {
+			margin-right: .3rem;
+		}
+	}
+
+	&__edit {
+		margin-left: auto;
+	}
+}
+
+// ----- 彙整頁標頭 -----
+
+.archive-header {
+	padding: 3rem 0 2rem;
+	border-bottom: 1px solid var(--ml-border);
+	background: radial-gradient(ellipse 50% 100% at 0% 0%, rgba($primary, .16), transparent 70%);
+
+	&__label {
+		margin-bottom: .5rem;
+		font-family: $font-family-monospace;
+		font-size: .875rem;
+		color: var(--ml-accent);
+		text-transform: uppercase;
+		letter-spacing: .08em;
+	}
+
+	&__title {
+		margin: 0;
+		font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+	}
+
+	&__desc {
+		max-width: 48rem;
+		margin-top: .75rem;
+		color: var(--bs-secondary-color);
+
+		p:last-child {
+			margin: 0;
+		}
+	}
+
+	&__count {
+		margin-top: .75rem;
+		font-family: $font-family-monospace;
+		font-size: .8125rem;
+		color: var(--bs-tertiary-color);
+	}
+
+	.search-form {
+		max-width: 30rem;
+		margin-top: 1.25rem;
+	}
+}
+
+.pagination-wrapper {
+	margin: 1.5rem 0 2.5rem;
+}
+
+.no-results {
+	padding: 3rem 0;
+	text-align: center;
+	color: var(--bs-secondary-color);
+
+	.search-form {
+		max-width: 26rem;
+		margin: 1.5rem auto 0;
+	}
+}

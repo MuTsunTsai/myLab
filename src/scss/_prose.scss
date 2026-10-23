@@ -1,0 +1,315 @@
+// 文章內文排版（取代 mynote 的 .markdown-body）。
+
+.entry-content {
+	font-size: 1.0625rem;
+	line-height: 1.85;
+	overflow-wrap: break-word;
+
+	> :first-child {
+		margin-top: 0;
+	}
+
+	// ----- 標題 -----
+
+	h2, h3, h4, h5, h6 {
+		margin: 2.25em 0 .8em;
+		line-height: 1.4;
+	}
+
+	h2 {
+		position: relative;
+		padding-bottom: .45em;
+		font-size: 1.6rem;
+		border-bottom: 1px solid var(--ml-border);
+
+		&::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			bottom: -1px;
+			width: 3rem;
+			height: 2px;
+			background: var(--ml-gradient);
+		}
+	}
+
+	h3 {
+		font-size: 1.3rem;
+
+		&::before {
+			content: "#";
+			margin-right: .45em;
+			font-family: $font-family-monospace;
+			color: var(--ml-accent);
+			opacity: .7;
+		}
+	}
+
+	h4 {
+		font-size: 1.1rem;
+	}
+
+	// 從目錄或連結跳轉過來時，標題短暫高亮
+	:target {
+		animation: target-flash 3s ease;
+	}
+
+	// ----- 段落與清單 -----
+
+	p, ul, ol, dl, table, blockquote, figure {
+		margin-bottom: 1.25em;
+	}
+
+	ul, ol {
+		padding-left: 1.6em;
+	}
+
+	li {
+		margin: .3em 0;
+
+		&::marker {
+			color: rgba($primary, .9);
+		}
+	}
+
+	strong {
+		font-weight: 700;
+		color: var(--bs-emphasis-color);
+	}
+
+	a {
+		text-decoration-color: rgba($link-color-dark, .4);
+		text-underline-offset: .2em;
+
+		&:hover {
+			text-decoration-color: currentColor;
+		}
+	}
+
+	hr {
+		height: 1px;
+		margin: 2.5em 0;
+		border: 0;
+		background: linear-gradient(90deg, transparent, var(--ml-border-strong), transparent);
+		opacity: 1;
+	}
+
+	blockquote {
+		padding: .75em 1.25em;
+		color: #a9b6c9;
+		background: rgba($primary, .06);
+		border-left: 3px solid $primary;
+		border-radius: 0 $border-radius $border-radius 0;
+
+		> :last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// ----- 圖片 -----
+
+	img {
+		max-width: 100%;
+		height: auto;
+		background-color: unset;
+		border-radius: $border-radius;
+	}
+
+	figure {
+		text-align: center;
+	}
+
+	figcaption {
+		margin-top: .5em;
+		font-size: .875rem;
+		font-style: normal;
+		color: var(--bs-secondary-color);
+	}
+
+	// ----- 表格 -----
+
+	table {
+		display: block;
+		width: max-content;
+		max-width: 100%;
+		overflow-x: auto;
+		font-size: .9375rem;
+		border-collapse: collapse;
+
+		th, td {
+			padding: .5em .9em;
+			border: 1px solid var(--ml-border-strong);
+		}
+
+		th {
+			color: var(--bs-emphasis-color);
+			background: var(--ml-surface-3);
+		}
+
+		tr:nth-child(2n) td {
+			background: rgba(148, 163, 184, .05);
+		}
+	}
+
+	// ----- 行內程式碼 -----
+
+	:not(pre) > code {
+		padding: .15em .4em;
+		font-size: .875em;
+		vertical-align: .05em;
+		color: $code-color-dark;
+		background: rgba(148, 163, 184, .14);
+		border: 1px solid rgba(148, 163, 184, .12);
+		border-radius: $border-radius-sm;
+	}
+
+	a > code {
+		color: #9cf;
+	}
+
+	kbd {
+		padding: .1em .45em;
+		font-size: .85em;
+		background: var(--ml-surface-3);
+		border: 1px solid var(--ml-border-strong);
+		border-bottom-width: 2px;
+		border-radius: $border-radius-sm;
+	}
+
+	// ----- 註腳 -----
+
+	sup {
+		line-height: 0;
+	}
+
+	// 外層的 <sup> 已經縮小字級並上移，這裡用 rem 固定大小
+	a.footnote-ref {
+		display: inline-block;
+		min-width: 1.6em;
+		margin: 0 .15em;
+		padding: .05em .35em;
+		font-family: $font-family-monospace;
+		font-size: .75rem;
+		line-height: 1.4;
+		text-align: center;
+		color: var(--ml-accent);
+		text-decoration: none;
+		background: rgba($cyan, .1);
+		border: 1px solid rgba($cyan, .3);
+		border-radius: $border-radius-sm;
+		transition: background-color .15s, color .15s;
+
+		&:hover,
+		&:focus-visible {
+			color: #fff;
+			background: rgba($cyan, .3);
+		}
+	}
+
+	.footnotes {
+		margin-top: 3rem;
+		padding-top: 1.25rem;
+		font-size: .9375rem;
+		color: var(--bs-secondary-color);
+		border-top: 1px dashed var(--ml-border-strong);
+
+		&::before {
+			content: "註解";
+			display: block;
+			margin-bottom: .75rem;
+			font-family: $font-family-monospace;
+			font-size: .8125rem;
+			font-weight: 600;
+			color: var(--bs-emphasis-color);
+			letter-spacing: .08em;
+		}
+
+		> hr {
+			display: none;
+		}
+
+		ol {
+			padding-left: 1.75em;
+		}
+
+		li {
+			padding: .15em .5em;
+			border-radius: $border-radius-sm;
+
+			&::marker {
+				font-family: $font-family-monospace;
+				font-size: .875em;
+				color: var(--ml-accent);
+			}
+
+			&:target {
+				background: rgba($cyan, .08);
+			}
+		}
+
+		p {
+			margin-bottom: .5em;
+		}
+	}
+
+	.footnote-backref {
+		margin-left: .3em;
+		font-family: $font-family-monospace;
+		font-variant-emoji: text;
+		text-decoration: none;
+	}
+
+	// ----- 嵌入內容 -----
+
+	iframe,
+	video {
+		max-width: 100%;
+	}
+}
+
+// 註腳預覽（src/ts/footnotes.ts）
+.footnote-tip {
+	position: absolute;
+	z-index: 1080;
+	width: max-content;
+	max-width: min(26rem, calc(100vw - 1rem));
+	padding: .75rem 1rem;
+	font-size: .875rem;
+	line-height: 1.7;
+	color: var(--bs-body-color);
+	background: rgba(15, 23, 42, .96);
+	border: 1px solid rgba($cyan, .35);
+	border-radius: $border-radius;
+	box-shadow: 0 12px 32px -8px rgba(0, 0, 0, .8), 0 0 0 1px rgba($cyan, .1);
+
+	p:last-child {
+		margin-bottom: 0;
+	}
+
+	:not(pre) > code {
+		padding: .1em .35em;
+		font-size: .875em;
+		background: rgba(148, 163, 184, .14);
+		border-radius: $border-radius-sm;
+	}
+}
+
+@keyframes target-flash {
+	0%, 40% {
+		color: var(--ml-highlight);
+	}
+}
+
+// ----- Super Socializer 分享按鈕 -----
+
+.the_champ_counter_container {
+	height: 2.5rem;
+
+	ul {
+		list-style-type: none;
+	}
+}
+
+ul.the_champ_sharing_ul {
+	padding: 0;
+}

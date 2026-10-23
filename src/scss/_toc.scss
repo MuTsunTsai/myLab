@@ -1,0 +1,152 @@
+// 目錄：文內的可折疊目錄（.toc--inline）與側欄小工具（.toc--widget）。
+// 兩者都以 CSS counter 產生階層編號（1、1.1、1.1.1）。
+
+.toc {
+	ol {
+		counter-reset: toc;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	// 放在 .widget 裡時，要蓋掉一般小工具清單的分隔線
+	li,
+	.widget & li {
+		counter-increment: toc;
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	ol ol {
+		padding-left: 1.1rem;
+	}
+
+	a {
+		display: block;
+		padding: .25rem .5rem;
+		color: var(--bs-secondary-color);
+		text-decoration: none;
+		line-height: 1.5;
+		border-radius: $border-radius-sm;
+		transition: color .15s, background-color .15s;
+
+		&::before {
+			content: counters(toc, ".") " ";
+			margin-right: .25rem;
+			font-family: $font-family-monospace;
+			font-size: .8em;
+			color: var(--bs-tertiary-color);
+		}
+
+		&:hover {
+			color: #fff;
+			background: rgba(148, 163, 184, .08);
+		}
+
+		&.is-active {
+			color: #fff;
+
+			&::before {
+				color: var(--ml-accent);
+			}
+		}
+	}
+}
+
+// ----- 文內目錄 -----
+
+.toc--inline {
+	width: min(100%, 30rem);
+	margin: 0 0 2rem;
+	font-size: .9375rem;
+	background: var(--ml-surface);
+	border: 1px solid var(--ml-border);
+	border-radius: $border-radius-lg;
+
+	summary {
+		display: flex;
+		align-items: center;
+		gap: .5rem;
+		padding: .75rem 1rem;
+		font-weight: 600;
+		color: var(--bs-emphasis-color);
+		cursor: pointer;
+		list-style: none;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		&::after {
+			content: "\F282"; // bi-chevron-down
+			margin-left: auto;
+			font-family: bootstrap-icons;
+			font-size: .8em;
+			transition: transform .2s;
+		}
+	}
+
+	&[open] summary {
+		border-bottom: 1px solid var(--ml-border);
+
+		&::after {
+			transform: rotate(180deg);
+		}
+	}
+
+	> ol {
+		padding: .5rem;
+	}
+}
+
+// ----- 側欄目錄 -----
+
+.toc--widget {
+	max-height: calc(100vh - var(--ml-sticky-top) - 6rem);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	font-size: .875rem;
+
+	// 左側的軌道線
+	> ol {
+		position: relative;
+		padding-left: .25rem;
+		border-left: 1px solid var(--ml-border-strong);
+	}
+
+	a {
+		position: relative;
+		border-radius: 0 $border-radius-sm $border-radius-sm 0;
+
+		&.is-active {
+			background: linear-gradient(90deg, rgba($primary, .22), transparent);
+
+			// 目前章節的指示條
+			&::after {
+				content: "";
+				position: absolute;
+				top: .2rem;
+				bottom: .2rem;
+				left: calc(-.25rem - 1px);
+				width: 2px;
+				border-radius: 2px;
+				background: var(--ml-gradient);
+				box-shadow: 0 0 8px rgba($cyan, .8);
+			}
+		}
+	}
+
+	// 巢狀層級改以連結的內距縮排，讓每一層的指示條都能對齊最外層的軌道
+	ol ol {
+		padding-left: 0;
+
+		a {
+			padding-left: 1.6rem;
+		}
+
+		ol a {
+			padding-left: 2.7rem;
+		}
+	}
+}

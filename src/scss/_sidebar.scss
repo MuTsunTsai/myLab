@@ -1,0 +1,248 @@
+// 側欄與小工具（含 WordPress Popular Posts 等外掛的小工具）。
+
+.site-sidebar {
+	padding-bottom: 2rem;
+}
+
+.sidebar-sticky {
+	@include media-breakpoint-up(lg) {
+		position: sticky;
+		top: var(--ml-sticky-top);
+	}
+}
+
+// ----- 固定側欄：lg 以下為右側抽屜 -----
+
+.sidebar-drawer {
+	@include media-breakpoint-up(lg) {
+		// offcanvas-lg 在桌面版預設把內容排成 flex 橫列
+		.offcanvas-body {
+			display: block;
+		}
+	}
+
+	@include media-breakpoint-down(lg) {
+		--bs-offcanvas-width: min(85vw, 22rem);
+		--bs-offcanvas-bg: rgba(10, 15, 28, .92);
+		--bs-offcanvas-border-color: var(--ml-border-strong);
+		backdrop-filter: blur(14px) saturate(160%);
+		box-shadow: -16px 0 32px -16px rgba(0, 0, 0, .8);
+
+		// 避開 admin bar
+		&.offcanvas-lg {
+			top: var(--ml-admin-bar);
+		}
+
+		// Bootstrap 開啟時會把焦點移到抽屜上，這不是使用者操作的元件，不需要焦點外框
+		&:focus-visible {
+			outline: none;
+		}
+
+		.offcanvas-header {
+			border-bottom: 1px solid var(--ml-border);
+		}
+
+		.offcanvas-title {
+			display: flex;
+			align-items: center;
+			gap: .5rem;
+			margin: 0;
+			font-size: 1rem;
+
+			&::before {
+				content: "";
+				width: .3rem;
+				height: 1.1em;
+				border-radius: 1rem;
+				background: var(--ml-gradient);
+			}
+		}
+
+		// 抽屜本身就是容器，小工具不需要再有外框；目錄標題也與抽屜標題重複
+		.widget {
+			padding: 0;
+			background: none;
+			border: 0;
+		}
+
+		.widget_mylab_toc .widget-title {
+			display: none;
+		}
+
+		.toc--widget {
+			max-height: none;
+			overflow: visible;
+			font-size: .9375rem;
+		}
+	}
+}
+
+// 開啟抽屜的浮動按鈕，位於回到頂端按鈕上方
+.drawer-toggle {
+	position: fixed;
+	right: 1.25rem;
+	bottom: 4.75rem;
+	z-index: 1020;
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	font-size: 1.25rem;
+	color: #fff;
+	background: rgba(15, 23, 42, .8);
+	border: 1px solid rgba($cyan, .5);
+	border-radius: 50%;
+	backdrop-filter: blur(8px);
+	box-shadow: 0 0 0 1px rgba($cyan, .2), 0 12px 32px -12px rgba($cyan, .5);
+	// 出現的時機與方式同回到頂端按鈕（.go-top），由 src/ts/header.ts 切換 .is-visible
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(.5rem);
+	transition: opacity .25s, transform .25s, visibility .25s, background-color .15s;
+
+	&.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+
+	&:hover {
+		background: rgba($cyan, .25);
+	}
+}
+
+.widget {
+	margin-bottom: 1.5rem;
+	padding: 1.25rem;
+	font-size: .9375rem;
+	background: rgba(15, 23, 42, .75);
+	border: 1px solid var(--ml-border);
+	border-radius: $border-radius-lg;
+
+	> :last-child {
+		margin-bottom: 0;
+	}
+
+	ul, ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		padding: .4rem 0;
+		border-bottom: 1px dashed var(--ml-border);
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		ul {
+			margin-top: .4rem;
+			padding-left: 1rem;
+		}
+	}
+
+	a {
+		color: var(--bs-body-color);
+		text-decoration: none;
+
+		&:hover {
+			color: var(--bs-link-hover-color);
+		}
+	}
+
+	select {
+		width: 100%;
+		padding: .375rem 2.25rem .375rem .75rem;
+		color: var(--bs-body-color);
+		background: rgba(15, 23, 42, .7) var(--bs-form-select-bg-img) no-repeat right .75rem center / 16px 12px;
+		border: 1px solid var(--ml-border-strong);
+		border-radius: $border-radius;
+		appearance: none;
+	}
+}
+
+// 小工具標題；同時涵蓋區塊小工具（如 WPP 輸出的 h2）
+.widget-title,
+.widget .wp-block-heading,
+.widget .popular-posts > h2 {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	margin: 0 0 1rem;
+	font-family: $font-family-monospace;
+	font-size: .8125rem;
+	font-weight: 600;
+	color: var(--bs-emphasis-color);
+	text-transform: uppercase;
+	letter-spacing: .08em;
+
+	&::before {
+		content: "";
+		width: .5rem;
+		height: .5rem;
+		border-radius: 2px;
+		background: var(--ml-gradient);
+		box-shadow: 0 0 8px rgba($cyan, .6);
+	}
+}
+
+// 固定側欄中的目錄不需要外框裡再有外框
+.sidebar-sticky .widget_mylab_toc {
+	padding-right: .75rem;
+}
+
+// ----- 核心小工具 -----
+
+.widget_recent_comments .comment-author-link {
+	color: var(--ml-accent);
+}
+
+.widget_tag_cloud .tagcloud,
+.wp-block-tag-cloud {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .4rem;
+
+	a {
+		padding: .15rem .6rem;
+		font-size: .8125rem !important;
+		background: var(--ml-surface-2);
+		border: 1px solid var(--ml-border);
+		border-radius: $border-radius-sm;
+
+		&:hover {
+			border-color: rgba($primary, .6);
+		}
+	}
+}
+
+.widget_calendar table {
+	width: 100%;
+	text-align: center;
+
+	caption {
+		caption-side: top;
+		color: var(--bs-emphasis-color);
+	}
+}
+
+// ----- WordPress Popular Posts -----
+
+.popular-posts {
+	display: contents !important;
+}
+
+.wpp-list li {
+	display: flex;
+	flex-direction: column;
+	gap: .15rem;
+}
+
+.wpp-meta,
+.wpp-stats {
+	font-size: .75rem;
+	color: var(--bs-tertiary-color);
+}

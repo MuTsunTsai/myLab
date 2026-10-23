@@ -1,0 +1,176 @@
+// 頂部導覽列（固定於頂端、毛玻璃效果），以及文章頁的閱讀進度條。
+
+.site-header {
+	position: sticky;
+	top: var(--ml-admin-bar);
+	z-index: 1030;
+	background: rgba(10, 15, 28, .72);
+	backdrop-filter: blur(14px) saturate(160%);
+	border-bottom: 1px solid var(--ml-border);
+	transition: box-shadow .2s, background-color .2s;
+
+	.is-scrolled & {
+		background: rgba(10, 15, 28, .88);
+		box-shadow: 0 8px 24px -12px rgba(0, 0, 0, .7);
+	}
+
+	.navbar {
+		min-height: var(--ml-header-height);
+	}
+
+	// 固定第一列的高度，文章標題（.site-header__post-title）才能精確對齊
+	.navbar > .container {
+		position: relative;
+		min-height: calc(var(--ml-header-height) - #{$navbar-padding-y * 2});
+	}
+}
+
+// ----- 品牌（網站圖示 + 名稱） -----
+
+.site-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: .6rem;
+	margin-right: 1.5rem;
+	color: #fff;
+	font-weight: 700;
+	font-size: 1.125rem;
+	letter-spacing: .02em;
+	text-decoration: none;
+	transition: opacity .25s, transform .25s;
+
+	&:hover {
+		color: #fff;
+	}
+
+	img {
+		width: auto;
+		height: 2rem;
+		border-radius: $border-radius-sm;
+	}
+
+	&__name {
+		background: linear-gradient(90deg, #fff 30%, #9fd8ff);
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+}
+
+// 文章頁：標題捲出畫面後，導覽列左側改顯示文章標題
+.site-header__post-title {
+	position: absolute;
+	left: calc(var(--bs-gutter-x) * .5);
+	right: 4rem;
+	// 對齊導覽列第一列的中央；不能用 50%，手機版展開選單時 container 會變高
+	top: calc(var(--ml-header-height) * .5 - #{$navbar-padding-y});
+	transform: translateY(40%);
+	opacity: 0;
+	pointer-events: none;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-weight: 600;
+	color: #fff;
+	transition: opacity .25s, transform .25s;
+
+	@include media-breakpoint-up(lg) {
+		right: 18rem;
+	}
+
+	.show-post-title .site-header:not(.menu-open) & {
+		opacity: 1;
+		transform: translateY(-50%);
+	}
+}
+
+// 手機版展開選單時改回顯示網站名稱
+.show-post-title .site-header:not(.menu-open) .site-brand {
+	opacity: 0;
+	transform: translateY(-40%);
+	pointer-events: none;
+}
+
+.show-post-title .navbar-collapse:not(.show) .navbar-nav {
+	@include media-breakpoint-up(lg) {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
+.navbar-nav {
+	transition: opacity .25s;
+}
+
+// ----- 選單 -----
+
+.navbar {
+	--bs-navbar-color: rgba(226, 232, 240, .75);
+	--bs-navbar-hover-color: #fff;
+	--bs-navbar-active-color: #fff;
+	--bs-navbar-toggler-border-color: var(--ml-border-strong);
+}
+
+.navbar-nav .nav-link {
+	position: relative;
+	font-size: .9375rem;
+
+	@include media-breakpoint-up(lg) {
+		padding-inline: .9rem !important;
+
+		&.active::after {
+			content: "";
+			position: absolute;
+			left: .9rem;
+			right: .9rem;
+			bottom: -.7rem;
+			height: 2px;
+			border-radius: 2px;
+			background: var(--ml-gradient);
+		}
+	}
+}
+
+.navbar-toggler {
+	padding: .3rem .6rem;
+	font-size: 1.25rem;
+	color: #e2e8f0;
+
+	&:focus {
+		box-shadow: none;
+	}
+}
+
+.dropdown-menu {
+	--bs-dropdown-bg: var(--ml-surface-2);
+	--bs-dropdown-border-color: var(--ml-border-strong);
+	--bs-dropdown-link-hover-bg: rgba(#{to-rgb($primary)}, .18);
+	--bs-dropdown-link-active-bg: #{$primary};
+}
+
+.navbar .search-form {
+	margin: .75rem 0;
+
+	@include media-breakpoint-up(lg) {
+		width: 15rem;
+		margin: 0;
+	}
+}
+
+// ----- 閱讀進度條 -----
+
+.reading-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 2px;
+	overflow: hidden;
+
+	&__bar {
+		height: 100%;
+		background: var(--ml-gradient);
+		box-shadow: 0 0 8px rgba($cyan, .8);
+		transform: scaleX(0);
+		transform-origin: 0 50%;
+	}
+}

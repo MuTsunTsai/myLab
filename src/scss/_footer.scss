@@ -1,0 +1,125 @@
+// 頁尾、回到頂端按鈕、404 頁。
+
+.site-footer {
+	margin-top: 3rem;
+	background: rgba(8, 12, 22, .85);
+	border-top: 1px solid var(--ml-border);
+	font-size: .875rem;
+
+	&__widgets {
+		padding: 2.5rem 0 1rem;
+		border-bottom: 1px solid var(--ml-border);
+	}
+
+	&__bar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: .75rem 1.5rem;
+		padding-block: 1.5rem;
+		color: var(--bs-tertiary-color);
+
+		// 避開右下角的浮動按鈕（回到頂端、手機版的目錄按鈕）
+		@include media-breakpoint-up(md) {
+			padding-right: 4.5rem;
+		}
+
+		@include media-breakpoint-down(md) {
+			padding-bottom: 5rem;
+		}
+	}
+
+	a {
+		color: var(--bs-secondary-color);
+		text-decoration: none;
+
+		&:hover {
+			color: #fff;
+		}
+	}
+
+	&__copyright strong a {
+		color: var(--bs-emphasis-color);
+	}
+
+	&__links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: .5rem 1.25rem;
+	}
+}
+
+.footer-menu {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5rem 1.25rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+// ----- 回到頂端 -----
+
+.go-top {
+	position: fixed;
+	right: 1.25rem;
+	bottom: 1.25rem;
+	z-index: 1020;
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	font-size: 1.125rem;
+	color: #fff;
+	text-decoration: none;
+	background: rgba(15, 23, 42, .8);
+	border: 1px solid rgba($primary, .5);
+	border-radius: 50%;
+	backdrop-filter: blur(8px);
+	box-shadow: var(--ml-glow);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(.5rem);
+	transition: opacity .25s, transform .25s, visibility .25s, background-color .15s;
+
+	&.is-visible {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+
+	&:hover {
+		color: #fff;
+		background: $primary;
+	}
+}
+
+// ----- 404 -----
+
+.error-404 {
+	padding: 6rem 0;
+	text-align: center;
+
+	&__code {
+		margin: 0;
+		font-family: $font-family-monospace;
+		font-size: clamp(5rem, 18vw, 9rem);
+		font-weight: 700;
+		line-height: 1;
+		background: var(--ml-gradient);
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		filter: drop-shadow(0 0 24px rgba($primary, .45));
+	}
+
+	&__title {
+		margin: 1.5rem 0 .75rem;
+	}
+
+	.search-form {
+		max-width: 26rem;
+		margin: 2rem auto 1.5rem;
+	}
+}

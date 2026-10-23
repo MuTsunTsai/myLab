@@ -1,0 +1,11 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"preferredVersions": { "php": "8.3", "wp": "latest" },
+	"steps": [
+		{ "step": "login", "username": "admin", "password": "password" },
+		{ "step": "setSiteLanguage", "language": "zh_TW" },
+		{ "step": "installPlugin", "pluginData": { "resource": "wordpress.org/plugins", "slug": "easy-table-of-contents" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/preview/setup.php';" }
+	]
+}

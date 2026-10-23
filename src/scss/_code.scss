@@ -1,0 +1,145 @@
+// 程式碼區塊（Shiki）、數學式（KaTeX）、圖表（Mermaid）。
+
+$code-bg: #1e1e1e; // 與 Shiki dark-plus 一致
+
+code, kbd, samp, pre {
+	font-family: $font-family-monospace;
+}
+
+// Shiki 渲染前的佔位樣式，讓畫面不會在渲染完成時大幅跳動
+.entry-content pre {
+	padding: 1rem;
+	overflow-x: auto;
+	overflow-y: hidden;
+	font-size: .875rem;
+	line-height: 1.65;
+	color: #dcdcdc;
+	tab-size: 4;
+	background: $code-bg;
+	border: 1px solid var(--ml-border);
+	border-radius: $border-radius;
+
+	&::-webkit-scrollbar {
+		height: 20px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $code-bg;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: #555;
+		background-clip: padding-box;
+		border: 7px solid transparent;
+		border-radius: 10px;
+	}
+
+	code {
+		font-size: inherit;
+		color: inherit;
+		background: none;
+		border: 0;
+		padding: 0;
+	}
+}
+
+.code-block {
+	position: relative;
+	margin-bottom: 1.25em;
+	overflow: hidden;
+	background: $code-bg;
+	border: 1px solid var(--ml-border-strong);
+	border-radius: $border-radius;
+	box-shadow: 0 8px 24px -16px rgba(0, 0, 0, .8);
+
+	// 複製按鈕浮在右上角，滑鼠移入區塊時才出現；觸控裝置則一直淡淡地顯示
+	&__copy {
+		position: absolute;
+		top: .5rem;
+		right: .5rem;
+		display: grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		padding: 0;
+		font-size: .875rem;
+		color: #9ca3af;
+		background: rgba(37, 37, 38, .9);
+		border: 1px solid rgba(255, 255, 255, .1);
+		border-radius: $border-radius-sm;
+		opacity: 0;
+		transition: opacity .15s, color .15s, border-color .15s, background-color .15s;
+
+		@media (hover: none) {
+			opacity: .6;
+		}
+
+		&:hover {
+			color: #fff;
+			background: #333;
+			border-color: rgba(255, 255, 255, .2);
+		}
+
+		&:focus-visible,
+		&.is-copied {
+			opacity: 1;
+		}
+
+		&.is-copied {
+			color: $success;
+		}
+	}
+
+	&:hover &__copy {
+		opacity: 1;
+	}
+
+	pre {
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+	}
+}
+
+// ----- KaTeX -----
+
+.katex {
+	font-size: 1rem;
+	color: #fff;
+
+	// 給螢幕報讀器的 MathML 雖然被 clip 隱藏，寬度仍會撐出水平捲軸
+	.katex-mathml {
+		max-width: 1px;
+		overflow: hidden;
+	}
+}
+
+.math-block {
+	margin-bottom: 1.25em;
+	overflow-x: auto;
+	overflow-y: hidden;
+	text-align: center;
+}
+
+.math-error {
+	font-family: $font-family-monospace;
+	font-size: .875rem;
+	color: $danger;
+}
+
+// ----- Mermaid -----
+
+.mermaid {
+	margin-bottom: 1.25em;
+	text-align: center;
+
+	svg {
+		max-width: 100%;
+		height: auto;
+	}
+
+	g.label {
+		font-size: 15px;
+		line-height: 24px;
+	}
+}

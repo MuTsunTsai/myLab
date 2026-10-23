@@ -1,0 +1,215 @@
+// 留言列表與留言表單。
+
+.comments-area {
+	margin-top: 1rem;
+	padding-bottom: 2rem;
+}
+
+.comment-list {
+	margin: 0 0 2rem;
+	padding: 0;
+	list-style: none;
+
+	.children {
+		margin: 0;
+		padding: 0 0 0 1.25rem;
+		list-style: none;
+		border-left: 1px solid var(--ml-border-strong);
+
+		@include media-breakpoint-up(sm) {
+			margin-left: 1.25rem;
+		}
+	}
+
+	li {
+		margin: 0;
+	}
+}
+
+.comment-card {
+	margin: 1rem 0;
+	overflow: hidden;
+	background: var(--ml-surface);
+	border: 1px solid var(--ml-border);
+	border-radius: $border-radius-lg;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		gap: .75rem;
+		padding: .6rem 1rem;
+		border-bottom: 1px solid var(--ml-border);
+		background: rgba(37, 99, 235, .2);
+
+		.odd > & {
+			background: rgba(59, 130, 246, .32);
+		}
+	}
+
+	&__avatar {
+		flex-shrink: 0;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+
+		@include media-breakpoint-down(sm) {
+			width: 1.5rem;
+			height: 1.5rem;
+		}
+	}
+
+	&__meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		column-gap: .6rem;
+		min-width: 0;
+	}
+
+	&__author {
+		font-style: normal;
+		font-weight: 600;
+		color: #fff;
+
+		a {
+			color: inherit;
+		}
+	}
+
+	&__badge {
+		padding: .1rem .45rem;
+		font-size: .6875rem;
+		font-weight: 600;
+		color: #1e1b0f;
+		background: #fde68a;
+		border-radius: $border-radius-sm;
+	}
+
+	&__time {
+		font-family: $font-family-monospace;
+		font-size: .75rem;
+		color: rgba(226, 232, 240, .75);
+		text-decoration: none;
+
+		&:hover {
+			color: #fff;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		gap: .25rem;
+		margin-left: auto;
+
+		a {
+			display: grid;
+			place-items: center;
+			width: 1.9rem;
+			height: 1.9rem;
+			color: rgba(226, 232, 240, .75);
+			text-decoration: none;
+			border-radius: $border-radius-sm;
+
+			&:hover {
+				color: #fff;
+				background: rgba(255, 255, 255, .1);
+			}
+		}
+	}
+
+	&__body {
+		padding: 1rem 1.25rem;
+
+		> :last-child,
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__moderation {
+		font-size: .875rem;
+		color: $warning;
+	}
+
+	// 作者的留言以金色名字標示
+	&--author &__author {
+		color: #fe9;
+	}
+}
+
+.pingback .comment-card__body {
+	font-size: .875rem;
+}
+
+.comments-closed {
+	color: var(--bs-secondary-color);
+}
+
+// ----- 表單 -----
+
+.comment-respond {
+	margin-top: 2rem;
+
+	.comment-reply-title small {
+		margin-left: auto;
+		font-size: .875rem;
+		font-weight: normal;
+
+		a {
+			text-decoration: none;
+		}
+	}
+}
+
+.comment-form {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: .75rem;
+
+	@include media-breakpoint-up(sm) {
+		grid-template-columns: 1fr 1fr;
+
+		> * {
+			grid-column: 1 / -1;
+		}
+
+		> .comment-form-author {
+			grid-column: 1;
+		}
+
+		> .comment-form-email {
+			grid-column: 2;
+		}
+	}
+
+	p {
+		margin: 0;
+	}
+
+	.comment-notes,
+	.logged-in-as {
+		font-size: .875rem;
+		color: var(--bs-secondary-color);
+	}
+
+	textarea {
+		min-height: 9rem;
+	}
+
+	.comment-form-cookies-consent {
+		display: flex;
+		align-items: center;
+		gap: .5rem;
+		font-size: .875rem;
+		color: var(--bs-secondary-color);
+
+		input {
+			margin: 0;
+		}
+	}
+
+	.form-submit {
+		display: flex;
+		justify-content: flex-end;
+	}
+}

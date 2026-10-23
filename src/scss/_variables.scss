@@ -1,0 +1,55 @@
+// Bootstrap 變數覆寫。只放 Bootstrap 本身認得的變數；佈景主題自己的設計 token 在 _tokens.scss。
+
+// 色彩
+$blue: #3b82f6;
+$cyan: #22d3ee;
+$primary: $blue;
+$info: $cyan;
+$success: #22c55e;
+$warning: #f59e0b;
+$danger: #ef4444;
+
+// 只用暗色模式（<html data-bs-theme="dark">）
+$color-mode-type: data;
+$enable-dark-mode: true;
+
+$body-bg-dark: #0a0f1c;
+$body-color-dark: #c9d4e5;
+$body-emphasis-color-dark: #f1f5f9;
+$body-secondary-color-dark: rgba(#c9d4e5, .7);
+$body-secondary-bg-dark: #111a2e;
+$body-tertiary-color-dark: rgba(#c9d4e5, .5);
+$body-tertiary-bg-dark: #0e1526;
+$border-color-dark: rgba(148, 163, 184, .16);
+$border-color-translucent-dark: rgba(148, 163, 184, .16);
+$headings-color-dark: #f1f5f9;
+$link-color-dark: #5cc8ff;
+$link-hover-color-dark: #bde8ff;
+$code-color-dark: #e6edf3;
+$form-select-indicator-color-dark: #c9d4e5;
+
+// 字型
+$font-family-sans-serif: "Inter Variable", system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+$font-family-monospace: "FiraCodeFreeze", ui-monospace, "Cascadia Code", Consolas, monospace;
+$font-size-base: 1rem;
+$line-height-base: 1.7;
+$headings-font-weight: 700;
+$headings-line-height: 1.35;
+
+// 形狀
+$border-radius: .5rem;
+$border-radius-sm: .375rem;
+$border-radius-lg: .75rem;
+$border-radius-xl: 1rem;
+
+// 元件
+$link-underline-offset: .2em;
+$navbar-padding-y: .625rem;
+$navbar-dark-color: rgba(#e2e8f0, .75);
+$navbar-dark-hover-color: #fff;
+$navbar-dark-active-color: #fff;
+$input-btn-focus-color-opacity: .35;
+$breadcrumb-divider: quote("/");
+$breadcrumb-margin-bottom: 0;
+$pagination-padding-x: .85rem;
+$pagination-border-radius: $border-radius;

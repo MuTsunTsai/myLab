@@ -1,0 +1,46 @@
+// 佈景主題自己的設計 token（CSS 自訂屬性），前綴 --ml-。
+
+:root {
+	--ml-surface: #0f172a;
+	--ml-surface-2: #131d33;
+	--ml-surface-3: #1a2640;
+	--ml-border: rgba(148, 163, 184, .16);
+	--ml-border-strong: rgba(148, 163, 184, .28);
+	--ml-accent: #{$cyan};
+	--ml-gradient: linear-gradient(90deg, #{$primary}, #{$cyan});
+	--ml-glow: 0 0 0 1px rgba(#{to-rgb($primary)}, .3), 0 12px 32px -12px rgba(#{to-rgb($primary)}, .55);
+	--ml-highlight: #fde047;
+
+	// 固定頂部導覽列的高度；sticky 元素與錨點捲動都依此計算
+	--ml-header-height: 3.75rem;
+	--ml-admin-bar: 0px;
+	--ml-sticky-top: calc(var(--ml-header-height) + var(--ml-admin-bar) + 1rem);
+}
+
+// 定義在 :root 上，<html> 的 scroll-padding-top 才讀得到
+:root:has(body.admin-bar) {
+	--ml-admin-bar: 32px;
+
+	@media (max-width: 782px) {
+		--ml-admin-bar: 46px;
+	}
+
+	// 小螢幕上 admin bar 不是固定的
+	@media (max-width: 600px) {
+		--ml-admin-bar: 0px;
+	}
+}
+
+// 分類標籤配色，依頂層分類的順序循環使用（見 mylab_category_color()）
+$ml-chip-colors: (
+	#60a5fa,
+	#22d3ee,
+	#a78bfa,
+	#34d399,
+	#f472b6,
+	#fbbf24,
+	#fb923c,
+	#2dd4bf,
+	#818cf8,
+	#e879f9,
+);

@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || exit;
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#0a0f1c">
+	<?php // 本身就是暗色設計；請 Dark Reader 等擴充功能不要改寫樣式（它會改名 CSS 變數，導致首頁圖片等失效） ?>
+	<meta name="darkreader-lock">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

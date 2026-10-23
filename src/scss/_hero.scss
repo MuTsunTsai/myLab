@@ -10,14 +10,16 @@
 	background: var(--hero-image, none) center / cover no-repeat;
 	border-bottom: 1px solid var(--ml-border);
 
+	// 圖片上的遮罩：左側標題區較暗以確保可讀性，往右逐漸透出圖片，底部再接回頁面底色
 	&::before {
 		content: "";
 		position: absolute;
 		inset: 0;
 		z-index: -1;
 		background:
-			radial-gradient(ellipse 60% 80% at 15% 50%, rgba($primary, .25), transparent 70%),
-			linear-gradient(180deg, rgba(10, 15, 28, .6) 0%, rgba(10, 15, 28, .82) 65%, var(--bs-body-bg) 100%);
+			radial-gradient(ellipse 60% 80% at 15% 50%, rgba($primary, .18), transparent 70%),
+			linear-gradient(180deg, transparent 55%, var(--bs-body-bg) 100%),
+			linear-gradient(90deg, rgba(10, 15, 28, .8) 0%, rgba(10, 15, 28, .5) 55%, rgba(10, 15, 28, .35) 100%);
 	}
 
 	&__title {

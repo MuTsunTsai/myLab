@@ -21,6 +21,14 @@ html {
 	}
 }
 
+// 手機上加寬頁面兩側的留白（預設每邊 0.75rem）。只改 container 自己的 --bs-gutter-x：
+// .row 會另外設定這個變數，所以欄與欄之間的間距不受影響；依它對齊的元素（例如導覽列上的文章標題）也會自動跟著
+.container {
+	@include media-breakpoint-down(sm) {
+		--bs-gutter-x: 2.5rem;
+	}
+}
+
 // 不要給 body 加 position：小螢幕上 WordPress 工具列是 position: absolute，
 // body 一旦成為定位元素，工具列就會被 <html> 的 46px 上邊距一起推下來
 body {

@@ -13,6 +13,12 @@ html {
 	@media (prefers-reduced-motion: no-preference) {
 		scroll-behavior: smooth;
 	}
+
+	// 手機上整體字級稍小（16px → 14.5px）。用百分比以尊重使用者在瀏覽器設定的預設字級；
+	// 大部分尺寸以 rem 為單位，文字、間距與元件會一起等比縮小
+	@include media-breakpoint-down(sm) {
+		font-size: 90.625%;
+	}
 }
 
 // 不要給 body 加 position：小螢幕上 WordPress 工具列是 position: absolute，

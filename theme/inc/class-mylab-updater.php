@@ -25,7 +25,30 @@ final class MyLab_Updater {
 		// 在「控制台 › 更新」按下「再次檢查」時清除快取；必須早於 WordPress 在同一個 hook 上執行的 wp_update_themes()
 		add_action( 'load-update-core.php', array( __CLASS__, 'flush_on_force_check' ), 1 );
 		add_action( 'delete_site_transient_update_themes', array( __CLASS__, 'flush' ) );
-		add_action( 'upgrader_process_complete', array( __CLASS__, 'flush' ) );
+		add_action( 'upgrader_process_complete', array( __CLASS__, 'after_upgrade' ), 10, 2 );
+	}
+
+	/**
+	 * 更新（或以上傳 zip 覆蓋安裝）本佈景主題後：清除版本快取，並清除頁面快取。
+	 *
+	 * 打包後的 CSS／JS 檔名帶有 hash，更新時舊檔會被刪除；頁面快取若仍指向舊檔，頁面就會失去樣式。
+	 * 目前網站使用 WP Fastest Cache，透過它的公開勾點清除全部快取（含壓縮過的 CSS／JS）；
+	 * 沒安裝該外掛時，這個勾點不會有任何作用。
+	 *
+	 * @param WP_Upgrader $upgrader
+	 * @param array       $options
+	 */
+	public static function after_upgrade( $upgrader, $options ) {
+		self::flush();
+		if ( ! isset( $options['type'] ) || 'theme' !== $options['type'] ) {
+			return;
+		}
+		$themes  = isset( $options['themes'] ) ? (array) $options['themes'] : array();
+		$is_ours = in_array( get_template(), $themes, true )
+			|| ( isset( $upgrader->result['destination_name'] ) && get_template() === $upgrader->result['destination_name'] );
+		if ( $is_ours ) {
+			do_action( 'wpfc_clear_all_cache', true );
+		}
 	}
 
 	public static function flush_on_force_check() {

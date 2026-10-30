@@ -118,15 +118,16 @@ $c1 = wp_insert_comment( array( 'comment_post_ID' => $post_id, 'comment_author' 
 wp_insert_comment( array( 'comment_post_ID' => $post_id, 'comment_author' => 'admin', 'user_id' => 1, 'comment_parent' => $c1, 'comment_content' => '謝謝支持。', 'comment_approved' => 1 ) );
 wp_insert_comment( array( 'comment_post_ID' => $post_id, 'comment_author' => '讀者乙', 'comment_content' => '請問 paper.js 的版本？', 'comment_approved' => 1 ) );
 
-// 小工具：文章側欄放近期文章與分類，固定側欄放目錄
+// 小工具：文章側欄放近期文章、分類與彙整（下拉選單，用來檢查 select 的樣式），固定側欄放目錄
 update_option( 'widget_recent-posts', array( 2 => array( 'title' => '近期文章', 'number' => 5 ), '_multiwidget' => 1 ) );
 update_option( 'widget_categories', array( 2 => array( 'title' => '分類' ), '_multiwidget' => 1 ) );
+update_option( 'widget_archives', array( 2 => array( 'title' => '彙整', 'count' => 1, 'dropdown' => 1 ), '_multiwidget' => 1 ) );
 update_option( 'widget_mylab_toc', array( 2 => array( 'title' => '' ), '_multiwidget' => 1 ) );
 update_option(
 	'sidebars_widgets',
 	array(
 		'wp_inactive_widgets' => array(),
-		'sidebar-1'           => array( 'recent-posts-2', 'categories-2' ),
+		'sidebar-1'           => array( 'recent-posts-2', 'categories-2', 'archives-2' ),
 		'sidebar-3'           => array( 'mylab_toc-2' ),
 		'array_version'       => 3,
 	)

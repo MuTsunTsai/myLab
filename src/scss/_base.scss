@@ -187,6 +187,12 @@ body {
 	}
 }
 
+// select 的背景是半透明的，Chrome 展開的選項清單無法沿用而退回白底，所以選項要另外給不透明的背景
+select option {
+	color: var(--bs-body-color);
+	background-color: var(--ml-surface);
+}
+
 .input-group-text {
 	color: var(--bs-secondary-color);
 	background-color: var(--ml-surface-3);
